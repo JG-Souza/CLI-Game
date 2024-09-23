@@ -1,0 +1,14 @@
+ler todas as modificações com banco de dados
+- inserir função ir no hospital para recuperar hp
+
+- não quero que a barra de exp fique com numeros flutuantes
+
+dar um jeito de adcionar oponentes
+
+
+
+- ao fim da luta mostrar um menu de opções como: visualizar seus atributos
+- criar opção de ir ao medico
+
+- configurar o caso do xp atual ser maior do que a barra de xp
+

@@ -1,14 +1,19 @@
-ler todas as modificações com banco de dados
-- inserir função ir no hospital para recuperar hp
+- Preciso melhorar os textos nos prints
 
-- não quero que a barra de exp fique com numeros flutuantes
+- "sentar e descansar" deve ser substituido por "trocar de personagem"
 
-dar um jeito de adcionar oponentes
+- deve ser possível criar personagens
+
+- implementar lógica de itens
+
+- arrumar escolha de personagem e ver torre
 
 
 
-- ao fim da luta mostrar um menu de opções como: visualizar seus atributos
-- criar opção de ir ao medico
+* Criar função ver_torre
+* Criar função criar_personagem
 
-- configurar o caso do xp atual ser maior do que a barra de xp
+# Conceitos
+- POO
+- Herança
 

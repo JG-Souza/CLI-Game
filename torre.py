@@ -1,4 +1,3 @@
-# torre.py
 from database import conectar_db
 from monstro import Monstro
 from glb import lista_torres
@@ -9,60 +8,58 @@ class Torre:
         self.monstro = monstro
         self.capanga = capanga
         self.recompensa = recompensa
-        lista_torres.append(self)
+        lista_torres.append(self) # Adiciona o objeto Torre atual à lista de torres assim que é instanciado.
 
+    # Verifica se a torre já existe no banco de dados antes de salvar
         if not self.existe_no_db():
             self.salvar_no_db()
 
+
     def existe_no_db(self):
         with conectar_db() as conn:
-            cursor = conn.execute('SELECT COUNT(*) FROM torres WHERE nome = ?', (self.nome,))
-            count = cursor.fetchone()[0]
-            return count > 0
+            cursor = conn.execute('SELECT COUNT(*) FROM torres WHERE nome = ?', (self.nome,))  # é utilizada para contar o número de registros na tabela torres onde a coluna nome é igual a um valor específico.
+            count = cursor.fetchone()[0]  # O método fetchone retorna uma tupla de valor único (a contagem de registros), e count recebe o primeiro (e único) valor dessa tupla
+            return count > 0  # Retorna um valor booleano se já existir uma torre com o nome
+
 
     def salvar_no_db(self):
+        # insere um novo registro na tabela torres ou substitui um registro existente se houver uma chave primária em conflito, ou seja, se já existir uma torre com o mesmo nome, ela será atualizada em vez de duplicada.
         with conectar_db() as conn:
             conn.execute('''
                 INSERT INTO torres (nome, monstro_nome, capanga_nome, recompensa) VALUES (?, ?, ?, ?)
             ''', (self.nome, self.monstro.nome, self.capanga.nome, self.recompensa))
 
-    @classmethod
+
+    @classmethod # método de classe que carrega todas as torres do banco de dados
     def carregar_torres_do_db(cls):
         with conectar_db() as conn:
             cursor = conn.execute('SELECT nome, monstro_nome, capanga_nome, recompensa FROM torres')
-            for row in cursor.fetchall():
-                nome, monstro_nome, capanga_nome, recompensa = row
+            # Uma operação de desempacotamento será executada.
+            for row in cursor.fetchall(): # cada row receberá uma tupla com os valores de cada coluna especificada na consulta
+                nome, monstro_nome, capanga_nome, recompensa = row # cada variável receberá o valor correspondente na tupla row, na mesma ordem
                 
                 # Busca o monstro e capanga pelos nomes armazenados
                 monstro = cls.buscar_monstro(monstro_nome)
                 capanga = cls.buscar_capanga(capanga_nome)
-                
-                # Se não forem encontrados, você pode optar por criar novas instâncias ou lidar de outra forma
-                if not monstro:
-                    print(f'Monstro "{monstro_nome}" não encontrado, criando uma nova instância.')
-                    monstro = Monstro(nome=monstro_nome, hp_max=50, hp_atual=50, atk=10, dfs=6, spd=4, level=10)
-                if not capanga:
-                    print(f'Capanga "{capanga_nome}" não encontrado, criando uma nova instância.')
-                    capanga = Monstro(nome=capanga_nome, hp_max=10, hp_atual=10, atk=2, dfs=2, spd=2, level=1)
 
-                # Cria a instância da torre
+                # Cria a instância da torre após recuperar os dados
                 cls(nome, monstro, capanga, recompensa)
 
-    @staticmethod
+    @staticmethod # método estático, ou seja, não depende da instância da classe, e pode ser chamado diretamente na classe
     def buscar_monstro(nome):
         with conectar_db() as conn:
             cursor = conn.execute('SELECT * FROM monstros WHERE nome = ?', (nome,))
-            row = cursor.fetchone()
-            if row:
-                return Monstro(*row)  # Retorna a instância existente
-            return None  # Retorna None se não encontrado
+            row = cursor.fetchone() # Recebe o resultado da consulta
+            if row: # verifica se a tupla resultante da consulta possui um valor
+                return Monstro(*row)  # O asterisco antes de row é um operador de desempacotamento. Isso significa que cada elemento da tupla row será passado como um argumento separado para o construtor da classe Monstro
+            return None  # Funciona como um 'else'
 
-    @staticmethod
+    @staticmethod # método estático, ou seja, não depende da instância da classe, e pode ser chamado diretamente na classe
     def buscar_capanga(nome):
         with conectar_db() as conn:
             cursor = conn.execute('SELECT * FROM monstros WHERE nome = ?', (nome,))
-            row = cursor.fetchone()
-            if row:
-                return Monstro(*row)  # Retorna a instância existente
-            return None  # Retorna None se não encontrado
+            row = cursor.fetchone() # Recebe o resultado da consulta
+            if row: # verifica se a tupla resultante da consulta possui um valor
+                return Monstro(*row)  # O asterisco antes de row é um operador de desempacotamento. Isso significa que cada elemento da tupla row será passado como um argumento separado para o construtor da classe Monstro
+            return None  # Funciona como um 'else'
 

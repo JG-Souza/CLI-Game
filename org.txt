@@ -1,19 +1,5 @@
 - Preciso melhorar os textos nos prints
 
-- "sentar e descansar" deve ser substituido por "trocar de personagem"
-
-- deve ser possível criar personagens
-
 - implementar lógica de itens
 
-- arrumar escolha de personagem e ver torre
-
-
-
-* Criar função ver_torre
-* Criar função criar_personagem
-
-# Conceitos
-- POO
-- Herança
-
+- tratamento de erros durante as opções de escolha (try)
